@@ -16,8 +16,21 @@ public class Project {
   private List<Material> materials = new LinkedList<>();
   private List<Step> steps = new LinkedList<>();
   private List<Category> categories = new LinkedList<>();
+  
+  public Project() {
+	  
+  }
 
-  public Integer getProjectId() {
+  public Project(Integer projectId, String projectName, BigDecimal estimatedHours, BigDecimal actualHours, Integer difficulty, String notes) {
+	    this.projectId = projectId;
+	    this.projectName = projectName;
+	    this.estimatedHours = estimatedHours;
+	    this.actualHours = actualHours;
+	    this.difficulty= difficulty;
+	    this.notes = notes;
+}
+
+public Integer getProjectId() {
     return projectId;
   }
 
