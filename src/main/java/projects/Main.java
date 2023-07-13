@@ -21,8 +21,9 @@ public class Main {
 	private List<String> operations = List.of(
 			"1) Add a project",
 			"2) List projects",
-			"3) Select a Project"
-			
+			"3) Select a Project",
+			"4) Update Project details",
+			"5) Delete a project"
 	);
 	// @formatter:on
 
@@ -53,6 +54,16 @@ public class Main {
 				case 3:
 					SelectProject();
 					break;
+					
+				//update project details
+				case 4:
+					updateProjectDetails();
+					break;
+					
+				//Delete a project
+				case 5:
+					deleteProject();
+					break;
 
 				default:
 					System.out.println("\n" + selection + " is not a valid selection. Try again.");
@@ -63,6 +74,57 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void deleteProject() {
+		//call list of projects
+		listProject();
+		//collect project from user by project id
+		Integer projectId = getIntInput("Enter the project ID to delete");
+		//delete the specific project 
+		projectService.deleteProject(projectId);
+		System.out.println();
+		System.out.println("You have deleted project with Id: "+ projectId);
+		//re-call listRecipe method
+		listProject();
+				
+		//if current project is not null and project Id of the current project == to projectId that been pass then set the current project to null
+		if(Objects.nonNull(curProject) && curProject.getProjectId().equals(projectId) ){
+			curProject = null;
+		}
+		
+		
+	}
+
+	private void updateProjectDetails() {
+		//if there is no Project selected
+		if(Objects.isNull(curProject)) {
+			System.out.println("\nPlease select a project.");
+			return;
+		}
+		
+		//collect new info of the project from user
+		String projectName = getStringInput("Enter the project name ");
+		BigDecimal estimatedHours = getDecimalInput("Enter estimated hours");
+		BigDecimal actualHours = getDecimalInput("Enter Actual hours");
+		Integer difficulty = getIntInput("Enter the project difficulty(1-5)");
+		String notes = getStringInput("Enter the project notes ");
+
+		//check if obj is not null then set the values
+		if(Objects.nonNull(projectName)) {
+		Project project = new Project();
+		project.setProjectId(curProject.getProjectId());
+		project.setProjectName(projectName);
+		project.setEstimatedHours(estimatedHours);
+		project.setActualHours(actualHours);
+		project.setDifficulty(difficulty);;
+		project.setNotes(notes);
+		//modify the change 
+		projectService.modifyProjectDetails(project);
+		//reread the current project
+		curProject = projectService.fetchProjectById(curProject.getProjectId());
+		}
+		
 	}
 
 	private void SelectProject() {
@@ -79,18 +141,6 @@ public class Main {
 		curProject = projectService.fetchProjectById(project_id);
 
 	    
-	    
-//	    try {
-//	        // Call fetchProjectById() on the projectService object and assign the returned Project object to curProject
-//	        curProject = projectService.fetchProjectById(project_id);
-//	        
-//	        // Check if curProject is null and print an error message if it is
-//	        if (curProject == null) {
-//	            System.out.println("Invalid project ID selected.");
-//	        }
-//	    } catch (NoSuchElementException e) {
-//	        System.out.println("Project with ID " + project_id + " does not exist.");
-//	    }
 	}
 
 	private void listProject() {
