@@ -240,9 +240,11 @@ public class ProjectDao extends DaoBase {
 				+"WHERE project_id = ?";
 		//@formatter:on
 		
+		//get connection
 		try(Connection conn = DbConnection.getConnection()){
 			startTransaction(conn);
 			
+			//set parameters
 			try(PreparedStatement stmt = conn.prepareStatement(sql)){
 				setParameter(stmt, 1, project.getProjectName(), String.class);
 				setParameter(stmt, 2, project.getEstimatedHours(), BigDecimal.class);
@@ -269,11 +271,13 @@ public class ProjectDao extends DaoBase {
 	}
 
 	public boolean deleteProject(Integer projectId) {
+		//sql statement
 		String sql ="DELETE FROM "+ PROJECT_TABLE+ " WHERE project_id = ?";
 		
+		//connection
 		try(Connection conn = DbConnection.getConnection()){
 			startTransaction(conn);
-			
+			//prepared statement and set the parameter
 			try(PreparedStatement stmt = conn.prepareStatement(sql)){
 				setParameter(stmt, 1, projectId, Integer.class);
 				
@@ -282,7 +286,6 @@ public class ProjectDao extends DaoBase {
 				commitTransaction(conn);
 				
 				return deletedProject;
-				
 				
 			}catch(Exception e) {
 				rollbackTransaction(conn);

@@ -113,6 +113,7 @@ public class Main {
 		//check if obj is not null then set the values
 		if(Objects.nonNull(projectName)) {
 		Project project = new Project();
+		//set project id to the curProjectId
 		project.setProjectId(curProject.getProjectId());
 		project.setProjectName(projectName);
 		project.setEstimatedHours(estimatedHours);
